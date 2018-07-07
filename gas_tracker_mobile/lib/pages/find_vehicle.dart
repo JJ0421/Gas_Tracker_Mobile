@@ -11,8 +11,7 @@ class Makes extends StatefulWidget {
 
 class MakesState extends State<Makes> {
   List<Entry> data = new List<Entry>();
-  static String vehicleSelect = "";
-  bool change = false;
+  bool loading = true;
 
   @override
   void initState() {
@@ -50,19 +49,25 @@ class MakesState extends State<Makes> {
 
     setState(() {
       data = myEntryList;
+      loading = false;
     });
 
     return myEntryList;
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) => EntryItem(data[index]),
-      itemCount: data.length,
-
-    );
+    if (loading) {
+      return new Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return ListView.builder(
+        itemBuilder: (BuildContext context, int index) =>
+            EntryItem(data[index]),
+        itemCount: data.length,
+      );
+    }
   }
 }
 
@@ -75,10 +80,10 @@ class Entry {
   Entry(this.title, [this.children = const <Entry>[], this.make, this.model]);
 }
 
-class EntryItem extends StatefulWidget{
+class EntryItem extends StatefulWidget {
   Entry entry;
   EntryItem(this.entry);
-  
+
   State<StatefulWidget> createState() {
     return EntryItemState(entry);
   }
@@ -91,10 +96,9 @@ class EntryItemState extends State<EntryItem> {
 
   final Entry entry;
 
-  _pushDetails(String details){
-    Navigator.of(context).push(
-      new MaterialPageRoute(builder: (context) => new VehicleSelect(details))
-    );
+  _pushDetails(String details) {
+    Navigator.of(context).push(new MaterialPageRoute(
+        builder: (context) => new VehicleSelect(details)));
   }
 
   Widget _buildTiles(Entry root) {
@@ -104,9 +108,8 @@ class EntryItemState extends State<EntryItem> {
         onTap: () {
           String mod = root.model.trim();
           String year = root.title.trim();
-          print(root.make+' + '+mod + ' + ' + year);
-          _pushDetails(root.make+' + '+mod + ' + ' + year);
-          
+          print(root.make + ' + ' + mod + ' + ' + year);
+          _pushDetails(root.make + ' + ' + mod + ' + ' + year);
         },
       );
     }
@@ -116,9 +119,6 @@ class EntryItemState extends State<EntryItem> {
       children: root.children.map(_buildTiles).toList(),
     );
   }
-
-  
-
 
   @override
   Widget build(BuildContext context) {
