@@ -81,7 +81,7 @@ class Entry {
 }
 
 class EntryItem extends StatefulWidget {
-  Entry entry;
+  final Entry entry;
   EntryItem(this.entry);
 
   State<StatefulWidget> createState() {
@@ -96,9 +96,9 @@ class EntryItemState extends State<EntryItem> {
 
   final Entry entry;
 
-  _pushDetails(String details) {
+  _pushDetails(String make, String model, String year) {
     Navigator.of(context).push(new MaterialPageRoute(
-        builder: (context) => new VehicleSelect(details)));
+        builder: (context) => new VehicleSelect(make, model, year)));
   }
 
   Widget _buildTiles(Entry root) {
@@ -108,8 +108,7 @@ class EntryItemState extends State<EntryItem> {
         onTap: () {
           String mod = root.model.trim();
           String year = root.title.trim();
-          print(root.make + ' + ' + mod + ' + ' + year);
-          _pushDetails(root.make + ' + ' + mod + ' + ' + year);
+          _pushDetails(root.make, mod, year);
         },
       );
     }
