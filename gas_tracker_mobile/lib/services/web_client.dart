@@ -17,7 +17,16 @@ class WebClient{
     //print(data);
     return data;
   }
-  
+
+
+  Future<String> getVehicleInfo(String data_key) async{
+    var response = await http.get(Uri.encodeFull('http://10.0.2.2:8080/api/findCar/'+data_key),
+    headers: {
+      "Accept": "application/json"
+    });
+    var vehicle = json.decode(response.body);
+    return vehicle['cmb'].toString();
+  }  
 
 
 }

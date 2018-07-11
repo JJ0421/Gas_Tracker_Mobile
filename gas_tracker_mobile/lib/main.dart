@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './pages/find_vehicle.dart';
-import './pages/vehicle_selection.dart';
 
 void main() => runApp(new FindCar()
 );
