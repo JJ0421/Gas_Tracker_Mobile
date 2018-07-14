@@ -48,6 +48,15 @@ class VehicleDatabase{
     return res;
   }
 
+  Future<List<Map<String, dynamic>>> selectAll() async{
+    List<Map<String, dynamic>> map = new List<Map<String, dynamic>>();
+    var dbClient = await db;
+    map = await dbClient.query("Vehicles");
+    print("Map");
+    print(map);
+    return map;
+  }
+
   Future closeDb() async {
     var dbClient = await db;
     dbClient.close();
