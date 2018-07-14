@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/web_client.dart';
 import 'dart:async';
+import '../database/database.dart';
 
 class VehicleSelect extends StatelessWidget {
   final String make;
@@ -39,19 +40,32 @@ class VehicleInfoState extends State<VehicleInfo> {
   String model;
   String year;
   String mpg = "";
+  String data_key = "";
+
+  VehicleDatabase db;
+
   VehicleInfoState(this.make, this.model, this.year);
+
+  @override
+  void dispose(){
+    db.closeDb();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-    this.getMPG();
+    db = VehicleDatabase();
+    db.initDB;
+    data_key = (make + model + year).toLowerCase().replaceAll(" ", "");
+    this.getMPG();    
   }
 
   Future<String> getMPG() async {
     WebClient client = new WebClient();
     String str = "";
     await client
-        .getVehicleInfo((make + model + year).toLowerCase().replaceAll(" ", ""))
+        .getVehicleInfo(data_key)
         .then((data) {
       str = data;
     });
@@ -96,19 +110,21 @@ class VehicleInfoState extends State<VehicleInfo> {
               Text('MPG: ' + this.mpg,
                   style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
             ])),
-        
-        Container(padding: EdgeInsets.only(top: 35.0), child: Image(image: AssetImage('assets/icon.png'))),
+        Container(
+            padding: EdgeInsets.only(top: 35.0),
+            child: Image(image: AssetImage('assets/icon.png'))),
         Container(
           padding: EdgeInsets.only(top: 50.0),
-          child:
-          ButtonTheme(
-            minWidth: 150.0,
-            child: RaisedButton(
-              onPressed: (){print(mpg);},
-              child: Text('Save', style: TextStyle(color: Colors.white)),
-              color: Colors.blueAccent,
-              
-            )),
+          child: ButtonTheme(
+              minWidth: 150.0,
+              child: RaisedButton(
+                onPressed: () {
+                  print(mpg);
+                  db.addVehicle(data_key, year, make, model, int.parse(mpg));
+                },
+                child: Text('Save', style: TextStyle(color: Colors.white)),
+                color: Colors.blueAccent,
+              )),
         ),
       ],
     );
