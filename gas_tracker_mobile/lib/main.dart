@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import './pages/find_vehicle.dart';
+import './pages/home.dart';
 
-void main() => runApp(new FindCar()
-);
+void main() => runApp(new Home());
 
 class FindCar extends StatefulWidget{
   State<StatefulWidget> createState() {
@@ -15,10 +15,6 @@ class FindCarState extends State<FindCar>{
   Widget build(BuildContext context){
     return MaterialApp(
       home: Scaffold(
-        appBar: new AppBar(
-          title: new Text('Find your vehicle'),
-          backgroundColor: Colors.green,
-        ),
         body: new Makes()
       ),
     );
