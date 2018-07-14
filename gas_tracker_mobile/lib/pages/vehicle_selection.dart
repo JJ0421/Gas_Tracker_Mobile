@@ -69,33 +69,47 @@ class VehicleInfoState extends State<VehicleInfo> {
     return new Column(
       children: [
         Container(
-            padding: EdgeInsets.only(bottom: 80.0, top: 10.0),
+            padding: EdgeInsets.only(bottom: 70.0, top: 20.0),
             child: Text('Is this your vehicle?',
                 style: TextStyle(fontSize: 40.0))),
         Container(
-            padding: EdgeInsets.only(bottom: 13.0),
+            padding: EdgeInsets.only(left: 10.0, bottom: 13.0),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('Year: ' + this.year,
                   style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
             ])),
         Container(
-            padding: EdgeInsets.only(bottom: 13.0),
+            padding: EdgeInsets.only(left: 10.0, bottom: 13.0),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('Make: ' + this.make,
                   style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
             ])),
         Container(
-            padding: EdgeInsets.only(bottom: 13.0),
+            padding: EdgeInsets.only(left: 10.0, bottom: 13.0),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('Model: ' + this.model,
                   style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
             ])),
         Container(
-            padding: EdgeInsets.only(bottom: 13.0),
+            padding: EdgeInsets.only(left: 10.0, bottom: 13.0),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('MPG: ' + this.mpg,
                   style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
             ])),
+        
+        Container(padding: EdgeInsets.only(top: 35.0), child: Image(image: AssetImage('assets/icon.png'))),
+        Container(
+          padding: EdgeInsets.only(top: 50.0),
+          child:
+          ButtonTheme(
+            minWidth: 150.0,
+            child: RaisedButton(
+              onPressed: (){print(mpg);},
+              child: Text('Save', style: TextStyle(color: Colors.white)),
+              color: Colors.blueAccent,
+              
+            )),
+        ),
       ],
     );
   }
