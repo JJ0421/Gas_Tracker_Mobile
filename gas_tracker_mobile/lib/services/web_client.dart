@@ -12,14 +12,14 @@ class WebClient{
       "Accept": "application/json"
     });
     
-    
     List data = json.decode(response.body);
-    //print(data);
     return data;
   }
 
 
   Future<String> getVehicleInfo(String data_key) async{
+    data_key = data_key.replaceAll('/', '^');
+    print(data_key);
     var response = await http.get(Uri.encodeFull('http://10.0.2.2:8080/api/findCar/'+data_key),
     headers: {
       "Accept": "application/json"
