@@ -41,36 +41,61 @@ class VehicleInfoState extends State<VehicleInfo> {
   String mpg = "";
   VehicleInfoState(this.make, this.model, this.year);
 
-
-   @override
+  @override
   void initState() {
     super.initState();
     this.getMPG();
   }
 
-
-  Future<String> getMPG() async{ 
+  Future<String> getMPG() async {
     WebClient client = new WebClient();
-    await client.getVehicleInfo((make+model+year).toLowerCase().replaceAll(" ", "")).then((data){
-     mpg = data;
-     print(mpg);
+    String str = "";
+    await client
+        .getVehicleInfo((make + model + year).toLowerCase().replaceAll(" ", ""))
+        .then((data) {
+      str = data;
     });
 
-  setState((){
+    setState(() {
+      mpg = str;
+      print(mpg);
+    });
 
-  });
-
+    return "Success";
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Column(      
+    return new Column(
       children: [
-        Container(padding: EdgeInsets.only(bottom: 80.0, top: 10.0) ,child: Text('Is this your vehicle?', style: TextStyle(fontSize: 40.0))),
-        Container(padding: EdgeInsets.only(bottom: 13.0), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Year: ' + this.year, style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)])),
-        Container(padding: EdgeInsets.only(bottom: 13.0), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Make: ' + this.make, style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)])),
-        Container(padding: EdgeInsets.only(bottom: 13.0), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Model: ' + this.model, style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)])),
-        Container(padding: EdgeInsets.only(bottom: 13.0), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('MPG: ' + this.mpg, style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)])),
+        Container(
+            padding: EdgeInsets.only(bottom: 80.0, top: 10.0),
+            child: Text('Is this your vehicle?',
+                style: TextStyle(fontSize: 40.0))),
+        Container(
+            padding: EdgeInsets.only(bottom: 13.0),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Year: ' + this.year,
+                  style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
+            ])),
+        Container(
+            padding: EdgeInsets.only(bottom: 13.0),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Make: ' + this.make,
+                  style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
+            ])),
+        Container(
+            padding: EdgeInsets.only(bottom: 13.0),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Model: ' + this.model,
+                  style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
+            ])),
+        Container(
+            padding: EdgeInsets.only(bottom: 13.0),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('MPG: ' + this.mpg,
+                  style: TextStyle(fontSize: 25.0), textAlign: TextAlign.left)
+            ])),
       ],
     );
   }
