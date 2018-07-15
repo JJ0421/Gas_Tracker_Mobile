@@ -120,9 +120,7 @@ class VehicleInfoState extends State<VehicleInfo> {
               child: RaisedButton(
                 onPressed: () {
                   print(mpg);
-                  db.addVehicle(data_key, year, make, model, int.parse(mpg)).then(
-                    (data){db.selectAll();}
-                  );
+                  db.addVehicle(data_key, year, make, model, int.parse(mpg));
                 },
                 child: Text('Save', style: TextStyle(color: Colors.white)),
                 color: Colors.blueAccent,

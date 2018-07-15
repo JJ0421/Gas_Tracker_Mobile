@@ -5,15 +5,15 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
 
-class VehicleDatabase{
+class VehicleDatabase {
   static final VehicleDatabase _instance = VehicleDatabase._internal();
 
   factory VehicleDatabase() => _instance;
 
   static Database _db;
 
-  Future<Database> get db async{
-    if (_db != null){
+  Future<Database> get db async {
+    if (_db != null) {
       return _db;
     }
     _db = await initDB();
@@ -30,11 +30,13 @@ class VehicleDatabase{
   }
 
   void _onCreate(Database db, int version) async {
-    await db.execute("CREATE TABLE Vehicles(id STRING PRIMARY KEY, year TEXT, make TEXT, model TEXT, mpg INT, miles INT)");
+    await db.execute(
+        "CREATE TABLE Vehicles(id STRING PRIMARY KEY, year TEXT, make TEXT, model TEXT, mpg INT, miles INT)");
     print("Database was Created");
   }
 
-  Future<int> addVehicle(String data_key, String year, String make, String model, int mpg) async {
+  Future<int> addVehicle(
+      String data_key, String year, String make, String model, int mpg) async {
     var dbClient = await db;
     Map<String, dynamic> dataMap = new Map<String, dynamic>();
     dataMap['id'] = data_key;
@@ -48,19 +50,22 @@ class VehicleDatabase{
     return res;
   }
 
-  Future<List<Map<String, dynamic>>> selectAll() async{
+  Future<List<Map<String, dynamic>>> selectAll() async {
     List<Map<String, dynamic>> map = new List<Map<String, dynamic>>();
     var dbClient = await db;
     map = await dbClient.query("Vehicles");
-    print("Map");
-    print(map);
     return map;
+  }
+
+  Future<int> deleteVehicle(String id) async {
+    var dbClient = await db;
+    int res = await dbClient.delete("Vehicles", where: "id = ?", whereArgs: [id]);
+    print(res);
+    return res;
   }
 
   Future closeDb() async {
     var dbClient = await db;
     dbClient.close();
   }
-
-
 }
