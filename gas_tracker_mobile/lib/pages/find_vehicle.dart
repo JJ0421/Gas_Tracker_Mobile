@@ -12,11 +12,17 @@ class Makes extends StatefulWidget {
 class MakesState extends State<Makes> {
   List<Entry> data = new List<Entry>();
   bool loading = true;
+  static List cachedList;
 
   @override
   void initState() {
     super.initState();
-    this.getEntryData();
+    if(cachedList == null){
+      this.getEntryData();
+    }else{
+      data = cachedList;
+      loading = false;
+    }
   }
 
   Future<List<Entry>> getEntryData() async {
@@ -49,6 +55,7 @@ class MakesState extends State<Makes> {
 
     setState(() {
       data = myEntryList;
+      cachedList = myEntryList;
       loading = false;
     });
 

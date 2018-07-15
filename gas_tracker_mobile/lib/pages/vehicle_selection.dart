@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/web_client.dart';
 import 'dart:async';
 import '../database/database.dart';
+import '../pages/home.dart';
 
 class VehicleSelect extends StatelessWidget {
   final String make;
@@ -47,7 +48,7 @@ class VehicleInfoState extends State<VehicleInfo> {
   VehicleInfoState(this.make, this.model, this.year);
 
   @override
-  void dispose(){
+  void dispose() {
     db.closeDb();
     super.dispose();
   }
@@ -58,15 +59,13 @@ class VehicleInfoState extends State<VehicleInfo> {
     db = VehicleDatabase();
     db.initDB;
     data_key = (make + model + year).toLowerCase().replaceAll(" ", "");
-    this.getMPG();    
+    this.getMPG();
   }
 
   Future<String> getMPG() async {
     WebClient client = new WebClient();
     String str = "";
-    await client
-        .getVehicleInfo(data_key)
-        .then((data) {
+    await client.getVehicleInfo(data_key).then((data) {
       str = data;
     });
 
@@ -120,7 +119,17 @@ class VehicleInfoState extends State<VehicleInfo> {
               child: RaisedButton(
                 onPressed: () {
                   print(mpg);
-                  db.addVehicle(data_key, year, make, model, int.parse(mpg));
+                  db
+                      .addVehicle(data_key, year, make, model, int.parse(mpg))
+                      .then((data) {
+                    Navigator.push(
+                      context,
+                      new PageRouteBuilder(
+                          pageBuilder: (BuildContext context, _, __) {
+                        return Home();
+                      }),
+                    );
+                  });
                 },
                 child: Text('Save', style: TextStyle(color: Colors.white)),
                 color: Colors.blueAccent,

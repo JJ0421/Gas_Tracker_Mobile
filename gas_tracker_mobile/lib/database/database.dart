@@ -36,7 +36,7 @@ class VehicleDatabase {
   }
 
   Future<int> addVehicle(
-      String data_key, String year, String make, String model, int mpg) async {
+    String data_key, String year, String make, String model, int mpg) async {
     var dbClient = await db;
     Map<String, dynamic> dataMap = new Map<String, dynamic>();
     dataMap['id'] = data_key;

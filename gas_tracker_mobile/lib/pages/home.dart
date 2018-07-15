@@ -123,54 +123,76 @@ class HomeDataState extends State<HomeData> {
     String miles;
     VehicleDatabase db = VehicleDatabase();
     return new Scaffold(
-        appBar: AppBar(
-          title: Text('Saved Vehicles'),
-          backgroundColor: Colors.green,
-        ),
-        body: Container(
-          child: ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (BuildContext context, int index) {
-                mpg = data[index]['mpg'].toString();
-                miles = data[index]['miles'].toString();
-                return new Card(
-                    child: Container(
-                        child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(data[index]['year'] +
-                          ' ' +
-                          data[index]['make'] +
-                          ' ' +
-                          data[index]['model']),
-                      subtitle: Column(
-                        children: [
-                          Row(children: [
-                            Text('MPG: ' + mpg),
-                          ]),
-                          Row(children: [
-                            Text('Miles Recorded: ' + miles),
-                          ])
-                        ],
+      appBar: AppBar(
+        title: Text('Saved Vehicles'),
+        backgroundColor: Colors.green,
+      ),
+      body: Container(
+        child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (BuildContext context, int index) {
+              mpg = data[index]['mpg'].toString();
+              miles = data[index]['miles'].toString();
+              return new Card(
+                  child: Container(
+                      child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(data[index]['year'] +
+                        ' ' +
+                        data[index]['make'] +
+                        ' ' +
+                        data[index]['model']),
+                    subtitle: Column(
+                      children: [
+                        Row(children: [
+                          Text('MPG: ' + mpg),
+                        ]),
+                        Row(children: [
+                          Text('Miles Recorded: ' + miles),
+                        ])
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: new Icon(
+                        Icons.delete,
+                        color: Colors.red,
                       ),
-                      trailing: IconButton(
-                        icon: new Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          db.deleteVehicle(data[index]['id']).then((res) {
-                            db.selectAll().then((map) {
+                      onPressed: () {
+                        db.deleteVehicle(data[index]['id']).then((res) {
+                          db.selectAll().then((map) {
+                            setState(() {
                               data = map;
+                              if (data == null || data.isEmpty) {
+                                Navigator.push(
+                                  context,
+                                  new PageRouteBuilder(pageBuilder:
+                                      (BuildContext context, _, __) {
+                                    return Home();
+                                  }),
+                                );
+                              }
                             });
                           });
-                        },
-                        tooltip: 'Delete this item',
-                      ),
+                        });
+                      },
+                      tooltip: 'Delete this item',
                     ),
-                  ],
-                )));
-              }),
-        ));
+                  ),
+                ],
+              )));
+            }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        tooltip: 'Add another vehicle',        
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FindCar()),
+          );
+        },
+      ),
+    );
   }
 }
